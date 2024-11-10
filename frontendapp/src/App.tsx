@@ -12,51 +12,25 @@ function App() {
         image: string;
       
     }
-    const [search, setSearch] = useState("all")
     const [products, setProducts] = useState([])
     const inputRef = React.useRef<HTMLInputElement>(null);
     const fetchData = async () => {
-        try {
-            
-                console.log("inputref1: " + inputRef.current?.value)
-                
-                const response = await fetch("http://localhost:3000/products", {
-                    method: "GET",
-                    mode: "cors",
-                    headers: {
-                        'Content-type': "application/json"
-                    }
-                })
-                
-                if(!response.ok){
-                    throw new Error("Network not okey");
-                    
+        try {  
+            const response = await fetch("http://localhost:3000/products", {
+                method: "GET",
+                mode: "cors",
+                headers: {
+                    'Content-type': "application/json"
                 }
-                const data = await response.json();
-                setProducts(JSON.parse(data))
+            })
             
-           /*  if (!inputRef.current) {
-                console.log("inputref2: " + inputRef.current)
-                const response = await fetch("http://localhost:3000/search-products", {
-                    method: "GET",
-                    mode: "cors",
-                    headers: {
-                        'Content-type': "application/json"
-                    },
-                    body: JSON.parse(`{"search": ${inputRef.current}}`)
-                }) 
+            if(!response.ok){
+                throw new Error("Network not okey");
                 
-                if(!response.ok){
-                    throw new Error("Network not okey");
-                    
-                }
-                const data = await response.json();
-                setProducts(JSON.parse(data))
-            }*/
-            
-            /* JSON.parse(data).map((p : ProductType) => (
-                console.log(p.id)
-            )) */
+            }
+            const data = await response.json();
+            setProducts(JSON.parse(data))
+        
         } catch (error) {
             
         }
@@ -64,17 +38,28 @@ function App() {
 
     useEffect(() => {
         fetchData()
-        console.log("in fetch")
     }, [])
-    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-        console.log()
-        if (inputRef.current !== null) {
-            
-            setSearch(inputRef.current.value)
-            console.log("Input submit: "+inputRef.current.value)
-            fetchData()
-        }
+    const handleSubmit =  async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
+        if (inputRef.current !== null) {
+            const response = await fetch(`http://localhost:3000/search-products?search=${inputRef.current.value}`, {
+                method: "GET",
+                mode: "cors",
+                headers: {
+                    'Content-type': "application/json",
+                    'Access-Control-Allow-Origin': "*",
+                    'Access-Control-Allow-Methods': "GET, POST"
+                }
+            }) 
+            
+            if(!response.ok){
+                throw new Error("Network not okey");
+                
+            }
+            const data = await response.json();
+            setProducts(JSON.parse(data))
+            
+        }
     }
   return (
     <div className='flex flex-col justify-center items-center'>

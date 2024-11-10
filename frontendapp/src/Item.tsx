@@ -1,4 +1,4 @@
-import React, {FC, useState} from "react";
+import {useState} from "react";
 
 interface ProductProps {
     id: number;
