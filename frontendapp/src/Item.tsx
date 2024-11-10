@@ -1,4 +1,4 @@
-import { ComponentType, useState } from "react";
+import { useState } from "react";
 import Modal from "react-modal";
 
 // Interface for the product props
@@ -10,7 +10,9 @@ interface ProductProps {
   category: string;
   image: string;
 }
+// Setting the modal at a root element
 Modal.setAppElement('#root');
+
 const Product = ({
   id,
   name,
@@ -40,6 +42,7 @@ const Product = ({
       className="grid border border-stone-300 rounded-md w-64"
       onClick={() => openModal()}
     >
+        {/* The product/item with image, name, category and price */}
       <div className="flex flex-col justify-end items-center">
         <img src={image} className="scale-75" alt="product" />
       </div>
@@ -48,7 +51,7 @@ const Product = ({
         <label className="text-base font-bold text-center">{category}</label>
         <label className="">Price {price} $</label>
       </div>
-
+        {/* Modal to display more information about the product */}
       <Modal
         isOpen={isModalOpen}
         contentLabel="Product Details"
