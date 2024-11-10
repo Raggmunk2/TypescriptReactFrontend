@@ -24,19 +24,14 @@ function App() {
     // Function to fetch data from backed API & sets the products to be rendered
     const fetchData = async () => {
         try {
-            const response = await fetch("http://localhost:3000/products", {
-                method: "GET",
-                mode: "cors",
-                headers: {
-                    'Content-type': "application/json"
-                }
-            })
+            const response = await fetch("http://localhost:3000/products")
             
             if(!response.ok){
                 throw new Error("Network not okey");
                 
             }
             const data = await response.json();
+
             setProducts(JSON.parse(data))
         
         
@@ -50,14 +45,7 @@ function App() {
         try {
             
             if (inputRef.current !== null) {
-                const response = await fetch(`http://localhost:3000/search?search=${inputRef.current.value}`, {
-                    method: "GET",
-                    mode: "cors",
-                    headers: {
-                        'Content-type': "application/json"
-                        
-                    }
-                }) 
+                const response = await fetch(`http://localhost:3000/search?search=${inputRef.current.value}`) 
                 
                 if(!response.ok){
                     throw new Error("Network not okey");
