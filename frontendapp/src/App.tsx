@@ -79,15 +79,14 @@ function App() {
 
         </div>
         {/* Divs and rendering of the products using tailwind css grid */}
-        <div className="px-4 py-4 flex flex-col justify-center items-center">
-        <div className="m-1 p-10 grid grid-rows-5 grid-flow-col gap-6">
+    
+        <div className="m-1 p-10 grid grid-rows-3 grid-flow-col gap-6">
             
             {products.map((p: ProductType) => (
                 <Product key={p.id} id={p.id} name={p.name} price={p.price} description={p.description} category={p.category }image={p.image} />
                 
             ))} 
             
-        </div>
         </div>
     </div>
   );

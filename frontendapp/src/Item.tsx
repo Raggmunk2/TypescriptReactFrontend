@@ -37,13 +37,13 @@ const Product = ({
   return (
     <div
       key={id}
-      className="grid grid-flow-row-dense grid-col-1 grid-row-3 border border-stone-300 rounded-md w-64"
+      className="grid border border-stone-300 rounded-md w-64"
       onClick={() => openModal()}
     >
-      <div className="row-span-6 flex flex-col justify-end items-center">
+      <div className="flex flex-col justify-end items-center">
         <img src={image} className="scale-75" alt="product" />
       </div>
-      <div className="row-span-6 flex flex-col justify-end items-center pl-4 pr-4 pb-4">
+      <div className="flex flex-col justify-end items-center pl-4 pr-4 pb-4">
         <label className="text-base font-bold text-center">{name}</label>
         <label className="text-base font-bold text-center">{category}</label>
         <label className="">Price {price} $</label>
