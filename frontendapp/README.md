@@ -2,6 +2,11 @@
 This is a frontend written in React and Typescript for a store api with products.
 The functionalities are to see all products, display more information about a product (by klicking on it) and to search for a product. 
 
+
+To set up the project first time:
+
+- npm install
+
 To run the application:
 
 - npm start
