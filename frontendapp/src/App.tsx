@@ -14,13 +14,11 @@ function App() {
       
     }
     // UseStates for product and useRef for inputRef
-    const [products, setProducts] = useState([])
-    const inputRef = React.useRef<HTMLInputElement>(null);
+    const [products, setProducts] = useState<ProductType[]>([]);  // Typed state for products
+    const [searchQuery, setSearchQuery] = useState<string>(''); // State for the search query
 
-    // UseEffect to fetch the data from the backend
-    useEffect(() => {
-        fetchData()
-    }, [])
+
+   
     // Function to fetch data from backed API & sets the products to be rendered
     const fetchData = async () => {
         try {
@@ -39,26 +37,35 @@ function App() {
             console.log(error)
         }
     }
-    // To handle the change of the input field e.g. the search bar
-    const handleChange =  async (event: React.ChangeEvent<HTMLInputElement>) => {
-        event.preventDefault();
-        try {
-            
-            if (inputRef.current !== null) {
-                const response = await fetch(`http://localhost:3000/search?search=${inputRef.current.value}`) 
-                
-                if(!response.ok){
-                    throw new Error("Network not okey");
-                    
+    // To handle the change of the input field (search)
+    useEffect(() => {
+        const fetchSearchResults = async () => {
+            if (searchQuery) {
+                try {
+                    const response = await fetch(`http://localhost:3000/search?search=${searchQuery}`);
+
+                    if (!response.ok) {
+                        throw new Error("Network not ok");
+                    }
+
+                    const data = await response.json();
+                    if (Array.isArray(data)) {
+                        setProducts(data); // Update products with search result
+                    } else {
+                        setProducts(JSON.parse(data))
+                    }
+                } catch (error) {
+                    console.log(error);
                 }
-                const data = await response.json();
-                setProducts(JSON.parse(data))
-            
+            } else {
+                fetchData(); // If searchQuery is empty, fetch all products
             }
-        } catch (error) {
-            console.log(error)
-        }
-    }
+        };
+
+        fetchSearchResults(); // Call the function to fetch search results
+
+    }, [searchQuery]); // This useEffect will run every time searchQuery changes
+    
 
 
     return (
@@ -67,7 +74,8 @@ function App() {
             {/* Search bar using tailwind css */}
             <div className="px-4 py-4 flex flex-col justify-center items-center">
                 <div className="border border-blue-500 bg-blue-200 rounded-full p-1 pl-2 pr-2 w-96 flex justify-between">
-                    <input type="text" placeholder="Search..." ref={inputRef} className="bg-blue-200 rounded-full p-1 pl-5 pr-5 w-80" onChange={handleChange}/>
+                    <input type="text" placeholder="Search..." className="bg-blue-200 rounded-full p-1 pl-5 pr-5 w-80" onChange={(e) => setSearchQuery(e.target.value)} // Update search query on input change
+                        value={searchQuery}/>
                     <button className="text-blue-200 bg-blue-200 mr-2">
                         <i className="fa-solid fa-magnifying-glass text-md text-blue-500"></i>
                     </button>
